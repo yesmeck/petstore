@@ -28,6 +28,7 @@
     "g-cloud": "^1.0.2-beta",
     "g2": "^2.3.13",
     "g2-plugin-slider": "^1.2.1",
+    "json-schema-ref-parser": "^4.0.4",
     "lodash": "^4.17.4",
     "lodash-decorators": "^4.4.1",
     "lodash.clonedeep": "^4.5.0",
@@ -39,7 +40,8 @@
     "react-container-query": "^0.9.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
-    "react-fittext": "^1.0.0"
+    "react-fittext": "^1.0.0",
+    "swagger-parser": "^4.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
@@ -76,20 +78,34 @@
     "roadhog-api-doc": "^0.3.3",
     "rollbar": "^2.3.1",
     "stylelint": "^8.1.0",
-    "stylelint-config-standard": "^17.0.0"
+    "stylelint-config-standard": "^17.0.0",
+    "yaml-loader": "^0.5.0"
   },
   "optionalDependencies": {
     "nightmare": "^2.10.0"
   },
   "babel": {
-    "presets": ["env", "react"],
-    "plugins": ["transform-decorators-legacy", "transform-class-properties"]
+    "presets": [
+      "env",
+      "react"
+    ],
+    "plugins": [
+      "transform-decorators-legacy",
+      "transform-class-properties"
+    ]
   },
   "jest": {
-    "setupFiles": ["<rootDir>/tests/setupTests.js"],
-    "testMatch": ["**/?(*.)(spec|test|e2e).js?(x)"],
+    "setupFiles": [
+      "<rootDir>/tests/setupTests.js"
+    ],
+    "testMatch": [
+      "**/?(*.)(spec|test|e2e).js?(x)"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/tests/jasmine.js",
-    "moduleFileExtensions": ["js", "jsx"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/tests/styleMock.js"
     }
@@ -98,5 +114,9 @@
     "**/*.{js,jsx}": "lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ]
 }

@@ -6,6 +6,11 @@ import dynamic from 'dva/dynamic';
 import cloneDeep from 'lodash/cloneDeep';
 import { getNavData } from './common/nav';
 import { getPlainNode } from './utils/utils';
+import BasicLayout from './layouts/BasicLayout';
+import Home from './routes/Home';
+import List from './routes/List';
+import New from './routes/New';
+import NotFound from './routes/Exception/404';
 
 import styles from './index.less';
 
@@ -14,8 +19,10 @@ dynamic.setDefaultLoadingComponent(() => {
 });
 
 function getRouteData(navData, path) {
-  if (!navData.some(item => item.layout === path) ||
-    !(navData.filter(item => item.layout === path)[0].children)) {
+  if (
+    !navData.some(item => item.layout === path) ||
+    !navData.filter(item => item.layout === path)[0].children
+  ) {
     return null;
   }
   const route = cloneDeep(navData.filter(item => item.layout === path)[0]);
@@ -24,8 +31,10 @@ function getRouteData(navData, path) {
 }
 
 function getLayout(navData, path) {
-  if (!navData.some(item => item.layout === path) ||
-    !(navData.filter(item => item.layout === path)[0].children)) {
+  if (
+    !navData.some(item => item.layout === path) ||
+    !navData.filter(item => item.layout === path)[0].children
+  ) {
     return null;
   }
   const route = navData.filter(item => item.layout === path)[0];
@@ -38,24 +47,44 @@ function getLayout(navData, path) {
 }
 
 function RouterConfig({ history, app }) {
-  const navData = getNavData(app);
-  const UserLayout = getLayout(navData, 'UserLayout').component;
-  const BasicLayout = getLayout(navData, 'BasicLayout').component;
+  const passProps = { app };
 
-  const passProps = {
-    app,
-    navData,
-    getRouteData: (path) => {
-      return getRouteData(navData, path);
-    },
-  };
+  const routes = Object.keys(window.schema.definitions).reduce((acc, key) => {
+    const path = key.toLowerCase();
+    acc.push(
+      <Route
+        exact
+        key={`${path}-new`}
+        path={`/${path}/new`}
+        render={() => <div>{key} new</div>}
+      />
+    );
+    acc.push(
+      <Route
+        exact
+        key={`${path}-list`}
+        path={`/${path}/list`}
+        render={() => <div>{key} list</div>}
+      />
+    );
+    return acc;
+  }, []);
 
   return (
     <LocaleProvider locale={zhCN}>
       <Router history={history}>
         <Switch>
-          <Route path="/user" render={props => <UserLayout {...props} {...passProps} />} />
-          <Route path="/" render={props => <BasicLayout {...props} {...passProps} />} />
+          <Route
+            render={props => (
+              <BasicLayout {...props} {...passProps}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  {routes}
+                  <Route component={NotFound} />
+                </Switch>
+              </BasicLayout>
+            )}
+          />
         </Switch>
       </Router>
     </LocaleProvider>
